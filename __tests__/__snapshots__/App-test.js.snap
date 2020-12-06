@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#eee",
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#F24C00",
+        "borderBottomWidth": 0.3,
+        "borderColor": "#a9a9a9",
+        "justifyContent": "center",
+        "marginTop": 0,
+        "padding": 20,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontSize": 18,
+          "fontWeight": "500",
+          "textAlign": "center",
+        }
+      }
+    >
+      Character List
+    </Text>
+  </View>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#eee",
+      }
+    }
+  >
+    <RCTScrollView
+      disableVirtualization={false}
+      extraData={
+        Object {
+          "fetchFailed": false,
+          "isLoading": false,
+          "list": Array [],
+        }
+      }
+      getItem={[Function]}
+      getItemCount={[Function]}
+      horizontal={false}
+      initialNumToRender={3}
+      invertStickyHeaders={false}
+      inverted={false}
+      keyExtractor={[Function]}
+      maxToRenderPerBatch={10}
+      onContentSizeChange={[Function]}
+      onEndReachedThreshold={2}
+      onLayout={[Function]}
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollBeginDrag={[Function]}
+      onScrollEndDrag={[Function]}
+      removeClippedSubviews={false}
+      renderItem={[Function]}
+      scrollEventThrottle={50}
+      stickyHeaderIndices={Array []}
+      updateCellsBatchingPeriod={50}
+      viewabilityConfigCallbackPairs={Array []}
+      windowSize={21}
+    >
+      <View />
+    </RCTScrollView>
+  </View>
+</View>
+`;
