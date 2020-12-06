@@ -70,6 +70,20 @@ const styles = StyleSheet.create({
         fontWeight: "800",
         marginTop: 10
     },
+    revokeButton: {
+        backgroundColor: Variables.colors.danger,
+        padding: 10,
+        borderRadius: 6,
+        marginTop:30,
+
+    },
+
+    revokeText:{
+        textAlign: "center",
+        color: Variables.colors.white,
+        fontSize: 14,
+        fontWeight: "500"
+    },
 });
 
 export default styles;

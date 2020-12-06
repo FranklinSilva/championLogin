@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, Image, ActivityIndicator} from 'react-nati
 import styles from './styles';
 import deviceStorage from '../../services/deviceStorage';
 import Variables from '../../styles';
+import RevokeModal from '../../components/revokeModal';
 //redux things
 import {connect} from 'react-redux';
 
@@ -24,7 +25,8 @@ class Welcome extends Component {
             list: [],
             isLoading: false,
             fetchFailed: true,
-            isLoggedOut: false
+            isLoggedOut: false,
+            showModal: false
         }
     }
 
@@ -37,10 +39,9 @@ class Welcome extends Component {
         .then(res => 
         {
             if(!!res){
-                this.props.getChampionInfoSuccess(JSON.parse(res))
-                this.props.navigation.navigate('Champion');
+                this.props.getChampionInfoSuccess(JSON.parse(res));
+                this.props.navigation.navigate('Champion', {revokeToken: (url) => this.revokeToken(url)});
                 this.setState({isLoading: false, fetchFailed: true});
-
             }
             else
                 this.setState({isLoading: false, fetchFailed: true});
@@ -81,12 +82,17 @@ class Welcome extends Component {
         this.props.getChampionInfo(token)
         .then(() => {
             this.setState({isLoading: false, fetchFailed: true});
-            this.props.navigation.navigate('Champion');
+            this.props.navigation.navigate('Champion', {revokeToken: (url) => this.revokeToken(url)});
         })
         .catch(() => {
             this.setState({isLoading: false, fetchFailed: true});
         });
     } 
+
+    revokeToken = (url) => {
+        console.log('VOU DAR O REVOKE TOKEN!!!')
+        this.setState({revokeURL: url, showModal: true});
+    }
 
     render() {
         return (
@@ -114,10 +120,13 @@ class Welcome extends Component {
                     {this.state.fetchFailed && !this.state.isLoading &&
                     <View style={{alignItems: "center", justifyContent: "center", marginTop: 20}}>
                         <Text style={{fontSize: 14, color: Variables.colors.dark, marginLeft: 5}}>Auto login has failed</Text>
-                        <TouchableOpacity style={{backgroundColor: Variables.colors.secondary, padding: 10, width: 180, marginTop: 10}} onPress={() => this.loginGithub()}>
+                        <TouchableOpacity testID='gitHubLogin' style={{backgroundColor: Variables.colors.secondary, padding: 10, width: 180, marginTop: 10}} onPress={() => this.loginGithub()}>
                             <Text style={{color: Variables.colors.white, textAlign: "center", fontSize: 12}}>Login with your Github Account</Text>
                         </TouchableOpacity>
                     </View>}
+
+                    <RevokeModal url={this.state.revokeURL} visible={this.state.showModal} setVisible={() => this.setState({showModal: false})} />
+
                 </View>
         </View>
         );

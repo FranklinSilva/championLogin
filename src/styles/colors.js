@@ -9,6 +9,7 @@ export default {
     darker: '#333',
     black: '#454F63',
     gray: "#a9a9a9",
+    danger: '#e37a7a',
 
     primary: '#032f62',
     primaryDarken: '#05264c',

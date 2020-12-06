@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
-import {SafeAreaView} from 'react-navigation';
 import styles from './styles';
 import Variables from '../../styles';
+import { revoke } from 'react-native-app-auth';
 
 //redux things
 import {connect} from 'react-redux';
@@ -11,6 +11,8 @@ import * as championActions from '../../actions/champion';
 import { bindActionCreators } from 'redux';
 import deviceStorage from '../../services/deviceStorage';
 
+//Unsafe
+import {CLIENT_ID, CLIENT_sECRET} from '../../services/constants';
 
 class Champion extends Component {
     static navigationOptions = {
@@ -31,26 +33,50 @@ class Champion extends Component {
 
     componentDidMount(){
         console.log('this.props')
-        console.log(this.props)
         this.fetchUser(this.props.champion);
     }
 
     fetchUser = (champion) => {
         this.setState({isLoading: false, champion})
-        console.log(champion)
-        
     }
 
-    logout = () => {
+    logout = (url) => {
         deviceStorage.clearStorage();
-        console.log(this.props);
         this.props.navigation.goBack();
-        console.log('oi')
+        if(!!url){
+            this.props.navigation.state.params.revokeToken(url);
+        }
+    }
+
+    revokeToken = async () => {
+        const config = {
+            redirectUrl: 'com.characterlist://oauthredirect',
+            clientId: CLIENT_ID,
+            clientSecret: CLIENT_sECRET,
+            scopes: ['identity'],
+            serviceConfiguration: {
+              authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+              tokenEndpoint: 'https://github.com/login/oauth/access_token',
+              revocationEndpoint:
+                'https://github.com/settings/connections/applications/' + CLIENT_ID
+            }
+          };
+
+
+        const result = await revoke(config, {
+            tokenToRevoke: this.state.champion.idToken,
+            includeBasicAuth: true,
+            sendClientId: true,
+        });
+
+        console.log(result)
+
+        this.logout(result.url);
     }
 
     render() {
         return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.header}>
                 <View style={{flex:1}}></View>
                 <Text style={styles.headerText}>Your Information</Text>
@@ -61,7 +87,6 @@ class Champion extends Component {
                         width: 17, borderRadius: 8}}
                         resizeMode="contain"
                         source={require("../../images/exit.png")}/>
-                    {/*<Text style={styles.headerText}>Logout</Text>*/}
                 </TouchableOpacity>
             </View>
           
@@ -91,9 +116,12 @@ class Champion extends Component {
                         </View>
                     </View>
                     
+                    <TouchableOpacity style={styles.revokeButton} onPress={() => this.revokeToken()}>
+                        <Text style={styles.revokeText}>Logout and Revoke Token</Text>
+                    </TouchableOpacity>
 
             </ScrollView>
-        </SafeAreaView>
+        </View>
         );
     }
 

@@ -1,5 +1,6 @@
+// NavigationService.js
 
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, NavigationState, NavigationContext } from 'react-navigation';
 
 let _navigator;
 
@@ -18,5 +19,5 @@ function navigate(routeName, params) {
 
 export default {
   navigate,
-  setTopLevelNavigator
+  setTopLevelNavigator,
 };
